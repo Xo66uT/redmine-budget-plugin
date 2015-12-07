@@ -14,7 +14,7 @@ class BudgetIssueHook  < Redmine::Hook::ViewListener
       return ''
     end
   end
-  
+
   # Renders a select tag with all the Deliverables
   #
   # Context:
@@ -29,7 +29,7 @@ class BudgetIssueHook  < Redmine::Hook::ViewListener
       return ''
     end
   end
-  
+
   # Renders a select tag with all the Deliverables for the bulk edit page
   #
   # Context:
@@ -66,7 +66,7 @@ class BudgetIssueHook  < Redmine::Hook::ViewListener
   def controller_issues_edit_before_save(context = {})
     set_deliverable_on_issue(context)
   end
-  
+
   # Saves the Deliverable assignment to the issue
   #
   # Context:
@@ -87,7 +87,7 @@ class BudgetIssueHook  < Redmine::Hook::ViewListener
 
     return ''
   end
-  
+
   # Deliverable changes for the journal use the Deliverable subject
   # instead of the id
   #
@@ -101,7 +101,7 @@ class BudgetIssueHook  < Redmine::Hook::ViewListener
       context[:detail].value = d.subject unless d.nil? || d.subject.nil?
 
       d = Deliverable.find_by_id(context[:detail].old_value)
-      context[:detail].old_value = d.subject unless d.nil? || d.subject.nil?      
+      context[:detail].old_value = d.subject unless d.nil? || d.subject.nil?
     end
     ''
   end
