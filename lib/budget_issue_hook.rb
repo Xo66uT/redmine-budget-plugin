@@ -23,29 +23,27 @@ class BudgetIssueHook  < Redmine::Hook::ViewListener
   # * :project => Current project
   #
   def view_issues_form_details_bottom(context = { })
-    if not context[:project].module_enabled?('budget_module')
+    unless context[:project].module_enabled?('budget_module')
       return ""
     end
 
     deliverables = Deliverable.where(project_id: context[:project]).order('id DESC')
+    disabledIds = Deliverable.where(disabled: true).pluck(:id)
 
-    selectOptions = deliverables.collect { |d|
+    selectOptions = deliverables.map do |d|
       [d.subject + (d.disabled ? " #{t "label_disabled"}" : ""), d.id]
-    }
+    end
 
-    disabledIds = deliverables.reject { |d| not d.disabled }.collect { |d| d.id }
     select = context[:form].select :deliverable_id, selectOptions,
                                    { include_blank: true },
                                    { data: { disabled: disabledIds.to_json } }
 
     html = ""
-    html << javascript_include_tag("budget_issue_hook", :plugin => "budget_plugin")
+    html << javascript_include_tag("budget_issue_hook", plugin: "budget_plugin")
     html << "<p>#{select}<br/>"
     html << "<a id='show-disabled-deliverables'>#{t "label_show_disabled"}</a>"
     html << "<a id='hide-disabled-deliverables' style='display:none'>#{t "label_hide_disabled"}</a>"
     html << "</p>"
-
-    return html
   end
 
   # Renders a select tag with all the Deliverables for the bulk edit page
