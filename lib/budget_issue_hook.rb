@@ -28,7 +28,7 @@ class BudgetIssueHook  < Redmine::Hook::ViewListener
     end
 
     deliverables = Deliverable.where(project_id: context[:project]).order("id DESC")
-    disabled_ids = Deliverable.where(project_id: context[:project], disabled: true).pluck(:id)
+    disabled_ids = deliverables.where(disabled: true).pluck(:id)
 
     select_options = deliverables.map do |d|
       [d.subject + (d.disabled ? " #{t "label_disabled"}" : ""), d.id]
