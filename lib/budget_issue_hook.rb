@@ -27,7 +27,7 @@ class BudgetIssueHook  < Redmine::Hook::ViewListener
       return ""
     end
 
-    deliverables = Deliverable.where(project_id: context[:project]).order("id DESC")
+    deliverables = Deliverable.where(project_id: context[:project]).order("subject ASC")
     disabled_ids = deliverables.where(disabled: true).pluck(:id)
 
     select_options = deliverables.map do |d|
