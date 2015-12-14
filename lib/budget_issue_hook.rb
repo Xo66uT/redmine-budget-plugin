@@ -23,20 +23,20 @@ class BudgetIssueHook  < Redmine::Hook::ViewListener
   # * :project => Current project
   #
   def view_issues_form_details_bottom(context = { })
-    unless context[:project].module_enabled?('budget_module')
+    unless context[:project].module_enabled?("budget_module")
       return ""
     end
 
-    deliverables = Deliverable.where(project_id: context[:project]).order('id DESC')
-    disabledIds = Deliverable.where(disabled: true).pluck(:id)
+    deliverables = Deliverable.where(project_id: context[:project]).order("id DESC")
+    disabled_ids = Deliverable.where(project_id: context[:project], disabled: true).pluck(:id)
 
-    selectOptions = deliverables.map do |d|
+    select_options = deliverables.map do |d|
       [d.subject + (d.disabled ? " #{t "label_disabled"}" : ""), d.id]
     end
 
-    select = context[:form].select :deliverable_id, selectOptions,
+    select = context[:form].select :deliverable_id, select_options,
                                    { include_blank: true },
-                                   { data: { disabled: disabledIds.to_json } }
+                                   { data: { disabled: disabled_ids.to_json } }
 
     html = ""
     html << javascript_include_tag("budget_issue_hook", plugin: "budget_plugin")
