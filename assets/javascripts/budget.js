@@ -10,7 +10,7 @@ var Budget = {
     },
 
     updateAmounts: function() {
-        if ($('#deliverable_type').checked) {
+        if ($('#deliverable_type').is(":checked")) {
             // Fixed cost
             var cost = Budget.toAmount($('#deliverable_fixed_cost').val());
             Budget.updateAmount($('#fixedCost'), cost);
@@ -60,7 +60,7 @@ var Budget = {
     },
 
     changeType: function() {
-        if ($('#deliverable_type').checked) {
+        if ($('#deliverable_type').is(":checked")) {
             // Fixed
             $('.budget-hourly').hide();
             $('.budget-fixed').show();
